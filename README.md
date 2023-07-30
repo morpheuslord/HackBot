@@ -1,7 +1,7 @@
 
 # HackBot - AI Cybersecurity Chatbot
-```bash
-    _   _            _    ____        _   
+```text
+     _   _            _    ____        _   
     | | | | __ _  ___| | _| __ )  ___ | |_ 
     | |_| |/ _` |/ __| |/ /  _ \ / _ \| __| By: Morpheuslord
     |  _  | (_| | (__|   <| |_) | (_) | |_  AI used: Meta-LLama2
