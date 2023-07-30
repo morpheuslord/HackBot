@@ -10,7 +10,7 @@
 
 ## Introduction
 
-Welcome to HackBot, an AI-powered cybersecurity chatbot designed to provide helpful and accurate answers to your cybersecurity-related queries. Whether you are a security researcher, ethical hacker, or just curious about cybersecurity, HackBot is here to assist you in finding the information you need.
+Welcome to HackBot, an AI-powered cybersecurity chatbot designed to provide helpful and accurate answers to your cybersecurity-related queries. Whether you are a security researcher, an ethical hacker, or just curious about cybersecurity, HackBot is here to assist you in finding the information you need.
 
 HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" library. This allows HackBot to respond to your questions in a coherent and relevant manner. Please make sure to keep your queries in English and adhere to the guidelines provided to get the best results from HackBot.
 
@@ -20,7 +20,7 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
 
 - **Interactive Interface:** The chatbot provides an interactive command-line interface, making it easy to have conversations with HackBot.
 
-- **Clear Output:** HackBot presents its responses in well-formatted markdown, providing easily readable and organized answers.
+- **Clear Output:** HackBot presents its responses in a well-formatted markdown, providing easily readable and organized answers.
 
 ## Installation
 
@@ -71,7 +71,7 @@ Here are some additional commands you can use:
 
 **Please Note:** HackBot's responses are based on the Meta-LLama2 AI model, and its accuracy depends on the quality of the queries and data provided to it.
 
-I am also working on the AI training by which I can teach it how to be more accurate fine tune it to work for hackers on a much more professional level.
+I am also working on AI training by which I can teach it how to be more accurately tuned to work for hackers on a much more professional level.
 
 ## Contributing
 
@@ -84,6 +84,9 @@ We welcome contributions to improve HackBot's functionality and accuracy. If you
 5. Open a pull request to the `main` branch of this repository.
 
 Please maintain a clean commit history and adhere to the project's coding guidelines.
+
+## AI training
+If anyone with the know-how of training text generation models can help improve the code.
 
 ## Contact
 
