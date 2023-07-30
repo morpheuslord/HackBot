@@ -22,6 +22,10 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
 
 - **Clear Output:** HackBot presents its responses in a well-formatted markdown, providing easily readable and organized answers.
 
+## How it looks
+
+![image](https://github.com/morpheuslord/HackBot/assets/70637311/01a95209-6037-45c6-aadc-30919abccf7e)
+
 ## Installation
 
 ### Prerequisites
