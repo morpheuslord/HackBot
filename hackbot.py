@@ -1,5 +1,6 @@
 import os
 import platform
+import json
 from subprocess import run
 from langchain.llms import LlamaCpp
 from langchain import PromptTemplate
@@ -13,9 +14,10 @@ from rich.console import Group
 from rich.align import Align
 from rich import box
 from rich.markdown import Markdown
+from typing import Any
 
-console = Console()
-def check_for_model():
+
+def check_for_model() -> None:
     url = "https://huggingface.co/localmodels/Llama-2-7B-Chat-ggml/resolve/main/llama-2-7b-chat.ggmlv3.q4_0.bin"
     path = 'llama-2-7b-chat.ggmlv3.q4_0.bin'
     isExist = os.path.exists(path)
@@ -39,8 +41,10 @@ If the answer to the asked question or query is complete end your answering
 keep the answering accurate and do not skip details related to the query.
 Give your output in markdown format.
 """
-prompt = PromptTemplate(template=template, input_variables=["persona"])
 
+console = Console()
+prompt = PromptTemplate(template=template, input_variables=["persona"])
+chat_history = []
 callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
 
 llm = LlamaCpp(
@@ -55,6 +59,7 @@ llm = LlamaCpp(
     streaming=False,
 )
 
+
 def clearscr() -> None:
     try:
         osp = platform.system()
@@ -68,8 +73,11 @@ def clearscr() -> None:
     except Exception:
         pass
 
+
 def Print_AI_out(prompt) -> Panel:
-    ai_out = Markdown(llm(prompt))
+    global chat_history
+    out = llm(prompt)
+    ai_out = Markdown(out)
     message_panel = Panel(
             Align.center(
                 Group("\n", Align.center(ai_out)),
@@ -78,12 +86,23 @@ def Print_AI_out(prompt) -> Panel:
             box=box.ROUNDED,
             padding=(1, 2),
             title="[b red]The HackBot AI output",
-            border_style="bright_blue",
+            border_style="blue`q",
         )
+    save_data = {
+        "Query": str(prompt),
+        "AI Answer": str(out)
+    }
+    chat_history.append(save_data)
     return message_panel
 
 
-def main():
+def save_chat(chat_history: list[Any, Any]) -> None:
+    f = open('chat_history.json', 'w+')
+    f.write(json.dumps(chat_history))
+    f.close
+
+
+def main() -> None:
     clearscr()
     banner = """
      _   _            _    ____        _   
@@ -92,17 +111,42 @@ def main():
     |  _  | (_| | (__|   <| |_) | (_) | |_  AI used: Meta-LLama2
     |_| |_|\__,_|\___|_|\_\____/ \___/ \__|
     """
+    contact_dev = """
+    Email = morpheuslord@protonmail.com
+    Twitter = https://twitter.com/morpheuslord2
+    LinkedIn https://www.linkedin.com/in/chiranjeevi-g-naidu/
+    Github = https://github.com/morpheuslord
+    """
     console.print(Panel(Markdown(banner)), style="bold green")
     while True:
         try:
-            pro_in = Prompt.ask('> ')
-            if pro_in == 'quit_bot':
+            prompt_in = Prompt.ask('> ')
+            if prompt_in == 'quit_bot':
                 quit()
-            elif pro_in == 'clear_screen':
+            elif prompt_in == 'clear_screen':
                 clearscr()
                 pass
+            elif prompt_in == 'bot_banner':
+                console.print(Panel(Markdown(banner)), style="bold green")
+                pass
+            elif prompt_in == 'save_chat':
+                save_chat(chat_history)
+                pass
+            elif prompt_in == 'contact_dev':
+                console.print(Panel(
+                        Align.center(
+                            Group(Align.center(Markdown(contact_dev))),
+                            vertical="middle",
+                        ),
+                        title= "Dev Contact",
+                        border_style="red"
+                    ),
+                    style="bold green"
+                )
+                pass
+                pass
             else:
-                prompt = pro_in
+                prompt = prompt_in
                 print(Print_AI_out(prompt))
                 pass
         except KeyboardInterrupt:
