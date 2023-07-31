@@ -117,6 +117,15 @@ def main() -> None:
     LinkedIn https://www.linkedin.com/in/chiranjeevi-g-naidu/
     Github = https://github.com/morpheuslord
     """
+
+    help_menu = """
+    - clear_screen: Clears the console screen for better readability.
+    - quit_bot: This is used to quit the chat application
+    - bot_banner: Prints the default bots banner.
+    - contact_dev: Provides my contact information.
+    - save_chat: Saves the current sessions interactions.
+    - help_menu: Lists chatbot commands.
+    """
     console.print(Panel(Markdown(banner)), style="bold green")
     while True:
         try:
@@ -144,6 +153,17 @@ def main() -> None:
                     style="bold green"
                 )
                 pass
+            elif prompt_in == 'help_menu':
+                console.print(Panel(
+                        Align.center(
+                            Group(Align.center(Markdown(help_menu))),
+                            vertical="middle",
+                        ),
+                        title= "Help Menu",
+                        border_style="red"
+                    ),
+                    style="bold green"
+                )
                 pass
             else:
                 prompt = prompt_in
