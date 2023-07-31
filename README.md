@@ -72,6 +72,9 @@ Here are some additional commands you can use:
 
 - `clear_screen`: Clears the console screen for better readability.
 - `quit_bot`: This is used to quit the chat application
+- `bot_banner`: Prints the default bots banner.
+- `contact_dev`: Provides my contact information.
+- `save_chat`: Saves the current sessions interactions.
 
 **Note:** I am working on more addons and more such commands to give a more chatGPT experience
 
