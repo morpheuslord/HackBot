@@ -34,6 +34,8 @@ Before you proceed with the installation, ensure you have the following prerequi
 
 - Python (3.6 or later)
 - `pip` package manager
+- `Visual studio Code` - Follow the steps in this link [llama-cpp-prereq-install-instructions](https://github.com/abetlen/llama-cpp-python)
+- `cmake`
 
 ### Step 1: Clone the Repository
 
