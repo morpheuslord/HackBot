@@ -3,3 +3,4 @@ langchainplus-sdk==0.0.20
 rich==13.4.2
 Markdown==3.4.3
 markdown-it-py==2.2.0
+llama-cpp-python==0.1.77
