@@ -86,7 +86,7 @@ def Print_AI_out(prompt) -> Panel:
             box=box.ROUNDED,
             padding=(1, 2),
             title="[b red]The HackBot AI output",
-            border_style="blue`q",
+            border_style="blue",
         )
     save_data = {
         "Query": str(prompt),
