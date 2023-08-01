@@ -111,5 +111,5 @@ If anyone with the know-how of training text generation models can help improve 
 For any questions, feedback, or inquiries related to HackBot, feel free to contact the project maintainer:
 
 - Email: morpheuslord@protonmail.com
-- Twitter: [@morpheuslord2](https://twitter.com/YourTwitterHandle)
+- Twitter: [@morpheuslord2](https://twitter.com/morpheuslord2)
 - LinkedIn: [ChiranjeeviG](https://www.linkedin.com/in/chiranjeevi-g-naidu/)
