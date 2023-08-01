@@ -69,6 +69,8 @@ Here are some additional commands you can use:
 - `bot_banner`: Prints the default bots banner.
 - `contact_dev`: Provides my contact information.
 - `save_chat`: Saves the current sessions interactions.
+- `vuln_analysis`: Does a Vuln analysis using the scan data or log file.
+- `static_code_analysis`: Does a Static code analysis using the scan data or log file.
 
 **Note:** I am working on more addons and more such commands to give a more chatGPT experience
 
