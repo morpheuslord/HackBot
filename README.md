@@ -24,7 +24,14 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
 
 ## How it looks
 
-![image](https://github.com/morpheuslord/HackBot/assets/70637311/01a95209-6037-45c6-aadc-30919abccf7e)
+### Chat:
+![HackBot_chat](https://github.com/morpheuslord/HackBot/assets/70637311/01a95209-6037-45c6-aadc-30919abccf7e)
+
+### Static Code analysis:
+![code_analysis](https://github.com/morpheuslord/HackBot/assets/70637311/52ef1b07-4cf0-464e-91ac-9e3b7d015cb2)
+
+### Vulnerability analysis:
+![vuln_analysis](https://github.com/morpheuslord/HackBot/assets/70637311/6683b226-425e-4862-b254-f155f8f7b57d)
 
 ## Installation
 
