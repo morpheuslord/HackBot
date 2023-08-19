@@ -39,8 +39,8 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
 
 Before you proceed with the installation, ensure you have the following prerequisites:
 
-- Python (3.6 or later)
-- `pip` package manager
+- Python (3.10 or later)
+- `pip3` package manager
 - `Visual studio Code` - Follow the steps in this link [llama-cpp-prereq-install-instructions](https://github.com/abetlen/llama-cpp-python)
 - `cmake`
 
@@ -54,13 +54,13 @@ cd hackbot
 ### Step 2: Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ### Step 3: Download the AI Model
 
 ```bash
-python hackbot.py
+python3 hackbot.py
 ```
 
 The first time you run HackBot, it will check for the AI model required for the chatbot. If the model is not present, it will be automatically downloaded and saved as "llama-2-7b-chat.ggmlv3.q4_0.bin" in the project directory.
@@ -70,7 +70,7 @@ The first time you run HackBot, it will check for the AI model required for the 
 To start a conversation with HackBot, run the following command:
 
 ```bash
-python hackbot.py
+python3 hackbot.py
 ```
 
 HackBot will display a banner and wait for your input. You can ask cybersecurity-related questions, and HackBot will respond with informative answers. To exit the chat, simply type "quit_bot" in the input prompt.
