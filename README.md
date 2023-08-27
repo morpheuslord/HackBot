@@ -15,7 +15,9 @@ Welcome to HackBot, an AI-powered cybersecurity chatbot designed to provide help
 HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" library. This allows HackBot to respond to your questions in a coherent and relevant manner. Please make sure to keep your queries in English and adhere to the guidelines provided to get the best results from HackBot.
 
 ## Features
-
+- **Local AI/ Runpod Deployment Support:** I have added an option using which you can easily deploy the Hackbot chat interface and use llama in 2 ways:
+ - *Using RunPod:* You can use runpod serverless endpoint deployment of llama and connect them to the chatbot by changing the `AI_OPTION` section of the .env file for `Runpod you need to use RUNPOD` and for `Local Llama deployment LOCALLLAMA`. `RUNPOD` & `LOCALLLAMA`
+ - *Key Notes:* For the runpod version of the llama to work you need to make sure the `RUNPOD ID` and your `RUNPOD API KEY` are set. 
 - **AI Cybersecurity Chat:** HackBot can answer various cybersecurity-related queries, helping you with penetration testing, security analysis, and more.
 - **Interactive Interface:** The chatbot provides an interactive command-line interface, making it easy to have conversations with HackBot.
 - **Clear Output:** HackBot presents its responses in a well-formatted markdown, providing easily readable and organized answers.
@@ -39,7 +41,7 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
 
 Before you proceed with the installation, ensure you have the following prerequisites:
 
-- Python (3.10 or later)
+- Python (3.11 or later)
 - `pip3` package manager
 - `Visual studio Code` - Follow the steps in this link [llama-cpp-prereq-install-instructions](https://github.com/abetlen/llama-cpp-python)
 - `cmake`
@@ -69,6 +71,25 @@ The first time you run HackBot, it will check for the AI model required for the 
 
 To start a conversation with HackBot, run the following command:
 
+### For Local LLama users
+The `.env` file must look like this:
+```env
+RUNPOD_ENDPOINT_ID = ""
+RUNPOD_API_KEY = ""
+AI_OPTION = "LLAMALOCAL"
+```
+After that is done run this.
+```bash
+python hackbot.py
+```
+### For RunPod LLama users
+The `.env` file must look like this:
+```env
+RUNPOD_ENDPOINT_ID = "<<SERVERLESS ENDPOINT ID>>"
+RUNPOD_API_KEY = "<<RUNPOD API KEY>>"
+AI_OPTION = "RUNPOD"
+```
+After that is done run this.
 ```bash
 python3 hackbot.py
 ```
