@@ -10,7 +10,7 @@
 
 ## Introduction
 
-Welcome to HackBot, an AI-powered cybersecurity chatbot designed to provide helpful and accurate answers to your cybersecurity-related queries. Whether you are a security researcher, ethical hacker, or just curious about cybersecurity, HackBot is here to assist you in finding the information you need.
+Welcome to HackBot, an AI-powered cybersecurity chatbot designed to provide helpful and accurate answers to your cybersecurity-related queries and also do code analysis and scan analysis. Whether you are a security researcher, an ethical hacker, or just curious about cybersecurity, HackBot is here to assist you in finding the information you need.
 
 HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" library. This allows HackBot to respond to your questions in a coherent and relevant manner. Please make sure to keep your queries in English and adhere to the guidelines provided to get the best results from HackBot.
 
@@ -19,10 +19,21 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
  - *Using RunPod:* You can use runpod serverless endpoint deployment of llama and connect them to the chatbot by changing the `AI_OPTION` section of the .env file for `Runpod you need to use RUNPOD` and for `Local Llama deployment LOCALLLAMA`. `RUNPOD` & `LOCALLLAMA`
  - *Key Notes:* For the runpod version of the llama to work you need to make sure the `RUNPOD ID` and your `RUNPOD API KEY` are set. 
 - **AI Cybersecurity Chat:** HackBot can answer various cybersecurity-related queries, helping you with penetration testing, security analysis, and more.
-
 - **Interactive Interface:** The chatbot provides an interactive command-line interface, making it easy to have conversations with HackBot.
+- **Clear Output:** HackBot presents its responses in a well-formatted markdown, providing easily readable and organized answers.
+- **Static Code Analysis:** Utilizes the provided scan data or log file for conducting static code analysis. It thoroughly examines the source code without executing it, identifying potential vulnerabilities, coding errors, and security issues.
+- **Vulnerability Analysis:** Performs a comprehensive vulnerability analysis using the provided scan data or log file. It identifies and assesses security weaknesses, misconfigurations, and potential exploits present in the target system or network.
 
-- **Clear Output:** HackBot presents its responses in well-formatted markdown, providing easily readable and organized answers.
+## How it looks
+
+### Chat:
+![HackBot_chat](https://github.com/morpheuslord/HackBot/assets/70637311/01a95209-6037-45c6-aadc-30919abccf7e)
+
+### Static Code analysis:
+![code_analysis](https://github.com/morpheuslord/HackBot/assets/70637311/52ef1b07-4cf0-464e-91ac-9e3b7d015cb2)
+
+### Vulnerability analysis:
+![vuln_analysis](https://github.com/morpheuslord/HackBot/assets/70637311/6683b226-425e-4862-b254-f155f8f7b57d)
 
 ## Installation
 
@@ -31,7 +42,9 @@ HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" 
 Before you proceed with the installation, ensure you have the following prerequisites:
 
 - Python (3.11 or later)
-- `pip` package manager
+- `pip3` package manager
+- `Visual studio Code` - Follow the steps in this link [llama-cpp-prereq-install-instructions](https://github.com/abetlen/llama-cpp-python)
+- `cmake`
 
 ### Step 1: Clone the Repository
 
@@ -43,13 +56,13 @@ cd hackbot
 ### Step 2: Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ### Step 3: Download the AI Model
 
 ```bash
-python hackbot.py
+python3 hackbot.py
 ```
 
 The first time you run HackBot, it will check for the AI model required for the chatbot. If the model is not present, it will be automatically downloaded and saved as "llama-2-7b-chat.ggmlv3.q4_0.bin" in the project directory.
@@ -78,7 +91,7 @@ AI_OPTION = "RUNPOD"
 ```
 After that is done run this.
 ```bash
-python hackbot.py
+python3 hackbot.py
 ```
 
 HackBot will display a banner and wait for your input. You can ask cybersecurity-related questions, and HackBot will respond with informative answers. To exit the chat, simply type "quit_bot" in the input prompt.
@@ -97,7 +110,7 @@ Here are some additional commands you can use:
 
 **Please Note:** HackBot's responses are based on the Meta-LLama2 AI model, and its accuracy depends on the quality of the queries and data provided to it.
 
-I am also working on the AI training by which I can teach it how to be more accurate fine tune it to work for hackers on a much more professional level.
+I am also working on AI training by which I can teach it how to be more accurately tuned to work for hackers on a much more professional level.
 
 ## Contributing
 
@@ -111,10 +124,13 @@ We welcome contributions to improve HackBot's functionality and accuracy. If you
 
 Please maintain a clean commit history and adhere to the project's coding guidelines.
 
+## AI training
+If anyone with the know-how of training text generation models can help improve the code.
+
 ## Contact
 
 For any questions, feedback, or inquiries related to HackBot, feel free to contact the project maintainer:
 
 - Email: morpheuslord@protonmail.com
-- Twitter: [@morpheuslord2](https://twitter.com/YourTwitterHandle)
+- Twitter: [@morpheuslord2](https://twitter.com/morpheuslord2)
 - LinkedIn: [ChiranjeeviG](https://www.linkedin.com/in/chiranjeevi-g-naidu/)
