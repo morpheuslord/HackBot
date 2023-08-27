@@ -150,7 +150,7 @@ def vuln_analysis(scan_type, file_path, ai_option) -> Panel:
         Provide the scan type: {scan_type} 
         Provide the scan data or log data that needs to be analyzed: {file_data}
     """
-    prompt = f"[INST] <<SYS>> {instructions}<</SYS>> NMAP Data to be analyzed: {data} [/INST]"
+    prompt = f"[INST] <<SYS>> {instructions}<</SYS>> Data to be analyzed: {data} [/INST]"
     if ai_option == "RUNPOD":
         out = llama_api(prompt)
     else:
@@ -188,7 +188,7 @@ def static_analysis(language_used, file_path, ai_option) -> Panel:
         - File Name: {file_path}
         - File Data: {file_data}
     """
-    prompt = f"[INST] <<SYS>> {instructions}<</SYS>> NMAP Data to be analyzed: {data} [/INST]"
+    prompt = f"[INST] <<SYS>> {instructions}<</SYS>> Data to be analyzed: {data} [/INST]"
     if ai_option == "RUNPOD":
         out = llama_api(prompt)
     else:
@@ -295,7 +295,7 @@ def main() -> None:
                 instructions = """
                 You are an helpful cybersecurity assistant and I want you to answer my query and provide output in Markdown: 
                 """
-                prompt = f"[INST] <<SYS>> {instructions}<</SYS>> NMAP Data to be analyzed: {prompt_in} [/INST]"
+                prompt = f"[INST] <<SYS>> {instructions}<</SYS>> Cybersecurity Query: {prompt_in} [/INST]"
                 print(Print_AI_out(prompt, AI_OPTION))
                 pass
         except KeyboardInterrupt:
