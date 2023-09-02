@@ -147,7 +147,7 @@ Here are some additional commands you can use:
 - `quit_bot`: This is used to quit the chat application
 - `bot_banner`: Prints the default bots banner.
 - `contact_dev`: Provides my contact information.
-- `save_chat`: Saves the current sessions interactions.
+- `save_chat`: Saves the current session interactions.
 - `vuln_analysis`: Does a Vuln analysis using the scan data or log file.
 - `static_code_analysis`: Does a Static code analysis using the scan data or log file.
 
@@ -170,7 +170,12 @@ We welcome contributions to improve HackBot's functionality and accuracy. If you
 Please maintain a clean commit history and adhere to the project's coding guidelines.
 
 ## AI training
-If anyone with the know-how of training text generation models can help improve the code.
+If anyone with the know-how of training text generation models can help improve the code. For the AI training part, I have prepared a dataset and a working code for the training but I am facing issues with the training part and collaboration on that will be appreciated.
+You can view the dataset on :
+- [HuggingFace](https://huggingface.co/datasets/morpheuslord/cve-llm-training)
+- [GitHub](https://github.com/morpheuslord/CVE-llm_dataset)
+
+The Github version of the dataset is for the OpenAI training and the other is for Llama2-7b from meta. The AIM of the dataset is to try and possibly generate an AI model capable enough to better work with CVE data. If you feel the dataset is lacking then feel free to modify and share your views.
 
 ## Contact
 
