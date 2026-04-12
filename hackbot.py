@@ -262,10 +262,10 @@ def main() -> None:
                 pass
             elif prompt_in == 'vuln_analysis':
                 print(Markdown('----------'))
-                language_used = Prompt.ask('Scan Type > ')
+                scan_type = Prompt.ask('Scan Type > ')
                 file_path = Prompt.ask('File Path > ')
                 print(Markdown('----------'))
-                print(static_analysis(language_used, file_path, AI_OPTION))
+                print(vuln_analysis(scan_type, file_path, AI_OPTION))
                 pass
             elif prompt_in == 'contact_dev':
                 console.print(Panel(
