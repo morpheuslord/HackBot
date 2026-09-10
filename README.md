@@ -1,186 +1,154 @@
+# HackBot - agentic cybersecurity research team
 
-# HackBot - AI Cybersecurity Chatbot
 ```text
-     _   _            _    ____        _   
-    | | | | __ _  ___| | _| __ )  ___ | |_ 
-    | |_| |/ _` |/ __| |/ /  _ \ / _ \| __| By: Morpheuslord
-    |  _  | (_| | (__|   <| |_) | (_) | |_  AI used: Meta-LLama2
+     _   _            _    ____        _
+    | | | | __ _  ___| | _| __ )  ___ | |_
+    | |_| |/ _` |/ __| |/ /  _ \ / _ \| __|
+    |  _  | (_| | (__|   <| |_) | (_) | |_
     |_| |_|\__,_|\___|_|\_\____/ \___/ \__|
 ```
 
-## Introduction
+Agentic rewrite of [HackBot](https://github.com/morpheuslord/HackBot): a teaching demo of a real
+**agentic AI system** (not an LLM-call wrapper) for cybersecurity students.
 
-Welcome to HackBot, an AI-powered cybersecurity chatbot designed to provide helpful and accurate answers to your cybersecurity-related queries and also do code analysis and scan analysis. Whether you are a security researcher, an ethical hacker, or just curious about cybersecurity, HackBot is here to assist you in finding the information you need.
+* **Multi-agent orchestration** with [pydantic-ai](https://ai.pydantic.dev): an *orchestrator* agent
+  plans, spins up specialist agents **in parallel** (researchers, a SARIF analyst, a document analyst,
+  a tutor) and synthesises a cited answer. Specialists return typed pydantic models, not free text.
+* **MCP** (Model Context Protocol): every tool lives in a separate MCP server process
+  (`hackbot-mcp`, stdio). Agents are MCP *clients*. Extra MCP servers can be attached from a
+  standard `mcpServers` JSON file.
+* **ACP** (Agent Communication Protocol, IBM BeeAI `acp-sdk`): the agents are published by
+  `hackbot-acp` and can be discovered / called from any ACP client - including the orchestrator's
+  own `ask_remote_agent` tool and the TUI's Agents page.
+* **Any file or folder as input**: SARIF reports get structured triage; any other text file (source
+  code, config, logs, JSON, CSV, markdown, scanner output) - or a whole folder of them, e.g. a
+  Prowler/Nmap output directory - is reviewed by a *document analyst* agent through MCP
+  `load_document` / `read_document` / `search_document` tools. In the viewer `b` lists the folder's
+  files and jumps between them.
+* **Interactive terminal app** built only with Rich: dashboard, chat with streaming answers and a
+  live *Activity* tree of agents/tools (inspect any step), result and sources windows, a file viewer
+  with search, interactive **triage review** / **file review** windows that open when an analyst
+  finishes, history with previews, resizable panes and popups (Ctrl+arrows), settings with a
+  first-run wizard, and a Ctrl+P command palette.
+* Research and defence only: the system prompts refuse exploit / malware generation.
+  Cheapest OpenAI model by default (`gpt-4.1-nano`).
 
-HackBot utilizes the powerful language model Meta-LLama2 through the "LlamaCpp" library. This allows HackBot to respond to your questions in a coherent and relevant manner. Please make sure to keep your queries in English and adhere to the guidelines provided to get the best results from HackBot.
-
-## Features
-- **Local AI/ Runpod Deployment Support:** I have added an option using which you can easily deploy the Hackbot chat interface and use llama in 2 ways:
- - *Using RunPod:* You can use runpod serverless endpoint deployment of llama and connect them to the chatbot by changing the `AI_OPTION` section of the .env file for `Runpod you need to use RUNPOD` and for `Local Llama deployment LOCALLLAMA`. `RUNPOD` & `LOCALLLAMA`
- - *Key Notes:* For the runpod version of the llama to work you need to make sure the `RUNPOD ID` and your `RUNPOD API KEY` are set. 
-- **AI Cybersecurity Chat:** HackBot can answer various cybersecurity-related queries, helping you with penetration testing, security analysis, and more.
-- **Interactive Interface:** The chatbot provides an interactive command-line interface, making it easy to have conversations with HackBot.
-- **Clear Output:** HackBot presents its responses in a well-formatted markdown, providing easily readable and organized answers.
-- **Static Code Analysis:** Utilizes the provided scan data or log file for conducting static code analysis. It thoroughly examines the source code without executing it, identifying potential vulnerabilities, coding errors, and security issues.
-- **Vulnerability Analysis:** Performs a comprehensive vulnerability analysis using the provided scan data or log file. It identifies and assesses security weaknesses, misconfigurations, and potential exploits present in the target system or network.
-
-## How it looks
-### Using Llama
-Using LLama2 is one of the best offline and free options out there. It is currently under improvement I am working on a prompt that will better incorporate cybersecurity perspective into the AI.
-I have to thank **@thisserand** and his [llama2_local](https://github.com/thisserand/llama2_local) repo and also his YT video [YT_Video](https://youtu.be/WzCS8z9GqHw). They were great resources. To be frank the llama2 code is 95% his, I just yanked the code and added a Flask API functionality to it.
-
-The Accuracy of the AI offline and outside the codes test was great and had equal accuracy to openai or bard but while in code it was facing a few issues may be because of the prompting and all. I will try and fix it.
-The speed depends on your system and the GPU and CPU configs you have. currently, it is using the `TheBloke/Llama-2-7B-Chat-GGML` model and can be changed via the `portscanner` and `dnsrecon` files.
-
-For now, the llama code and scans are handled differently. After a few tests, I found out llama needs to be trained a little to operate like how I intended it to work so it needs some time. Any suggestions on how I can do that can be added to the discussions of this repo [Discussions Link](https://github.com/morpheuslord/GPT_Vuln-analyzer/discussions). For now, the output won't be a divided list of all the data instead will be an explanation of the vulnerability or issues discovered by the AI.
-
-The prompt for the model usage looks like this:
-```prompt
-[INST] <<SYS>> {user_instruction}<</SYS>> NMAP Data to be analyzed: {user_message} [/INST]
 ```
-The instructions looks like this:
-```prompt
-    Do a NMAP scan analysis on the provided NMAP scan information. The NMAP output must return in a asked format accorging to the provided output format. The data must be accurate in regards towards a pentest report.
-    The data must follow the following rules:
-    1) The NMAP scans must be done from a pentester point of view
-    2) The final output must be minimal according to the format given.
-    3) The final output must be kept to a minimal.
-    4) If a value not found in the scan just mention an empty string.
-    5) Analyze everything even the smallest of data.
-    6) Completely analyze the data provided and give a confirm answer using the output format.
-    7) mention all the data you found in the output format provided so that regex can be used on it.
-    8) avoid unnecessary explaination.
-    9) the critical score must be calculated based on the CVE if present or by the nature of the services open
-    10) the os information must contain the OS used my the target.
-    11) the open ports must include all the open ports listed in the data[tcp] and varifying if it by checking its states value.  you should not negect even one open port.
-    12) the vulnerable services can be determined via speculation of the service nature or by analyzing the CVE's found.
-    The output format:
-        critical score:
-        - Give info on the criticality
-        "os information":
-        - List out the OS information
-        "open ports and services":
-        - List open ports
-        - List open ports services
-        "vulnerable service":
-        - Based on CVEs or nature of the ports opened list the vulnerable services
-        "found cve":
-        - List the CVE's found and list the main issues.
+ TUI (rich) --events--> Runtime (asyncio thread)
+                          orchestrator (pydantic-ai)
+                            |- plan()
+                            |- spawn_researchers()  -> researcher x N (parallel)  --MCP--> hackbot-mcp: web_search, fetch_page, cwe_lookup
+                            |- analyse_sarif()      -> analyst                    --MCP--> hackbot-mcp: load_sarif, sarif_summary, sarif_findings
+                            |- analyse_document()   -> document_analyst           --MCP--> hackbot-mcp: load_document, read_document, search_document
+                            |- ask_tutor()          -> tutor
+                            '- ask_remote_agent()   --ACP--> hackbot-acp / any ACP server
 ```
 
-Using the instruction set and the data provided via the prompt the llama AI generates its output.
-
-For the most usage I suggest you create an runpod serverless endpoint deployment of llama you can refer this tutorial for that [tutorial](https://www.youtube.com/watch?v=Ftb4vbGUr7U). Follow the tutorial for better use.
-### Chat:
-![HackBot_chat](https://github.com/morpheuslord/HackBot/assets/70637311/01a95209-6037-45c6-aadc-30919abccf7e)
-
-### Static Code analysis:
-![code_analysis](https://github.com/morpheuslord/HackBot/assets/70637311/52ef1b07-4cf0-464e-91ac-9e3b7d015cb2)
-
-### Vulnerability analysis:
-![vuln_analysis](https://github.com/morpheuslord/HackBot/assets/70637311/6683b226-425e-4862-b254-f155f8f7b57d)
-
-## Installation
-
-### Prerequisites
-
-Before you proceed with the installation, ensure you have the following prerequisites:
-
-- Python (3.11 or later)
-- `pip3` package manager
-- `Visual studio Code` - Follow the steps in this link [llama-cpp-prereq-install-instructions](https://github.com/abetlen/llama-cpp-python)
-- `cmake`
-
-### Step 1: Clone the Repository
+## Setup
 
 ```bash
-git clone https://github.com/morpheuslord/hackbot.git
-cd hackbot
+uv sync
+uv run hackbot
 ```
 
-### Step 2: Install Dependencies
+On first launch a setup wizard asks for your OpenAI API key and model and writes `.env`
+(or copy `.env.example`). The MCP tool server is started automatically by the TUI.
+To start **everything** (TUI + MCP server + ACP agent server) with one command:
 
 ```bash
-pip3 install -r requirements.txt
+uv run hackbot --acp
 ```
 
-### Step 3: Download the AI Model
+or double-click / run `start.cmd` (Windows) or `./start.sh` (macOS/Linux), which also runs `uv sync`.
+`--acp` launches `hackbot-acp` on port 8000 (pass another port with `--acp 8100`), connects the Agents
+page to it and stops it when you quit. For the full demo with a report preloaded:
 
 ```bash
-python3 hackbot.py
+uv run hackbot --acp --file samples/sample.sarif
 ```
 
-The first time you run HackBot, it will check for the AI model required for the chatbot. If the model is not present, it will be automatically downloaded and saved as "llama-2-7b-chat.ggmlv3.q4_0.bin" in the project directory.
+`--file` (alias `--sarif`) accepts any text file or folder, e.g. `--file src/app.py`, `--file /var/log/auth.log`
+or `--file outputs/prowler/aws-prod/2026/06/15`.
 
-## Usage
+Other entry points:
 
-To start a conversation with HackBot, run the following command:
+| Command | What it does |
+|---------|--------------|
+| `uv run hackbot ask "latest on CVE-2024-3094" [--file F] [--agent researcher]` | one-shot run, prints the live agent/tool trace and the answer |
+| `uv run hackbot ask --file app.py "review this file"` | document analyst over any text file |
+| `uv run hackbot-mcp` (or `hackbot mcp`) | run the MCP tool server on stdio (point Claude Desktop / Cursor / any MCP client at it) |
+| `uv run hackbot-acp --port 8000` (or `hackbot acp`) | publish the agents over ACP; `GET /agents` lists them |
+| `uv run hackbot tools` | start the MCP server and list its tools |
+| `uv run hackbot agents` | describe the team |
+| `uv run pytest` | tests (SARIF parser, document loader, the whole team over MCP with a fake model) |
 
-### For Local LLama users
-The `.env` file must look like this:
-```env
-RUNPOD_ENDPOINT_ID = ""
-RUNPOD_API_KEY = ""
-AI_OPTION = "LLAMALOCAL"
-```
-After that is done run this.
-```bash
-python hackbot.py
-```
-### For RunPod LLama users
-The `.env` file must look like this:
-```env
-RUNPOD_ENDPOINT_ID = "<<SERVERLESS ENDPOINT ID>>"
-RUNPOD_API_KEY = "<<RUNPOD API KEY>>"
-AI_OPTION = "RUNPOD"
-```
-After that is done run this.
-```bash
-python3 hackbot.py
-```
+## Demo script (suggested)
 
-HackBot will display a banner and wait for your input. You can ask cybersecurity-related questions, and HackBot will respond with informative answers. To exit the chat, simply type "quit_bot" in the input prompt.
+1. **Home (F1)** - runtime status: MCP server started, tools discovered.
+2. **Chat (F2)** - ask *"What is the latest on CVE-2024-3094 (xz backdoor) and how is it detected?"*.
+   Watch the Activity panel: `plan` -> `spawn_researchers` -> `researcher-1..3` running in parallel,
+   each doing MCP `web_search` / `fetch_page` calls. Ctrl+E then Enter on any step shows its raw args/result.
+   Ctrl+R opens the answer in a window, Ctrl+S the sources (Enter asks the team to summarise one).
+3. **File (F4)** - Ctrl+O opens any file or folder. For a SARIF report, `a` runs orchestrator -> analyst ->
+   MCP `load_sarif`/`sarif_findings` and the **Triage review** window opens with per-finding verdicts,
+   priority and rationale (`a`/`x` accept/reject, `A` all, Enter details, `e` export markdown; `t`, `1-4`,
+   `n` let the human override). For any other file (try `src/hackbot/config.py` or a log), `a` runs the
+   document analyst and a **File review** window lists findings with line numbers (`g` jumps to the
+   line in the viewer; `/` searches the file).
+4. **Agents (F5)** - the team, MCP servers and tools; run a specialist directly (Enter).
+   With `--acp` the remote agents are already discovered (otherwise start `uv run hackbot-acp` in another
+   terminal, set the URL with `u`, `r` to refresh); Enter calls one over ACP. Ask the orchestrator to
+   "use the remote tutor agent" to see `ask_remote_agent`.
+5. **Settings (F6)** - model, API key, MCP config (`mcp_servers.example.json`), ACP URL; `s` saves to `.env`
+   and restarts the runtime.
 
-Here are some additional commands you can use:
+## Code map
 
-- `clear_screen`: Clears the console screen for better readability.
-- `quit_bot`: This is used to quit the chat application
-- `bot_banner`: Prints the default bots banner.
-- `contact_dev`: Provides my contact information.
-- `save_chat`: Saves the current session interactions.
-- `vuln_analysis`: Does a Vuln analysis using the scan data or log file.
-- `static_code_analysis`: Does a Static code analysis using the scan data or log file.
+| Path | Role |
+|------|------|
+| `src/hackbot/agents/orchestrator.py` | orchestrator agent + delegation tools (`spawn_researchers` runs agents with `asyncio.gather`) |
+| `src/hackbot/agents/specialists.py` | researcher / analyst / document analyst / tutor agents, least-privilege MCP toolsets, `Deps` |
+| `src/hackbot/agents/models.py` | typed contracts: `ResearchBrief`, `TriageReport`, `DocumentReport` |
+| `src/hackbot/agents/tracing.py` | step tree + translation of pydantic-ai stream events (tool calls, text deltas, "thoughts") |
+| `src/hackbot/agents/runtime.py` | `AgentSystem` (team + MCP connections) and the background `Runtime` used by the TUI |
+| `src/hackbot/mcp_server.py` | the MCP server (`MCPServer`/`FastMCP`), tools built on `core/` |
+| `src/hackbot/acp_server.py`, `acp_client.py` | ACP server publishing the agents; client used by the TUI and the orchestrator |
+| `src/hackbot/core/` | pure SARIF parser / triage export, universal document + folder loader, web helpers |
+| `src/hackbot/ui/` | Rich TUI: `keys.py`, `widgets.py` (scroll view, popups, palette, overlay), `pages.py`, `app.py` |
 
-**Note:** I am working on more addons and more such commands to give a more chatGPT experience
+## Keys
 
-**Please Note:** HackBot's responses are based on the Meta-LLama2 AI model, and its accuracy depends on the quality of the queries and data provided to it.
+| Key | Action |
+|-----|--------|
+| F1..F7 / Tab | Home, Chat, History, File, Agents, Settings, Help |
+| Ctrl+P | command palette (free text is sent to the agents) |
+| Ctrl+N / Ctrl+O / Ctrl+Q | new chat / open any file or folder / quit |
+| Ctrl+Left / Ctrl+Right | resize the panes of the current page; with a popup open, Ctrl+arrows resize the popup |
+| Chat: Ctrl+T / Ctrl+E / Ctrl+R / Ctrl+S | toggle activity / inspect steps / result window / sources |
+| Chat commands | `/open <path>` `/agent <name> <prompt>` `/acp <url>` `/analyse` `/new` `/quit` |
 
-I am also working on AI training by which I can teach it how to be more accurately tuned to work for hackers on a much more professional level.
+## Configuration (`.env`)
 
-## Contributing
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `OPENAI_API_KEY` | - | required |
+| `HACKBOT_MODEL` | `gpt-4.1-nano` | any OpenAI chat model with tool calling |
+| `OPENAI_BASE_URL` | OpenAI | OpenAI-compatible endpoint |
+| `HACKBOT_MAX_RESEARCHERS` | 3 | parallel researcher agents per question (1-4) |
+| `HACKBOT_ACP_URL` | - | remote ACP server, e.g. `http://127.0.0.1:8000` |
+| `HACKBOT_MCP_CONFIG` | - | extra MCP servers (`mcpServers` JSON, see `mcp_servers.example.json`) |
+| `HACKBOT_DATA_DIR` | `~/.hackbot` | sessions, triage state, reports, MCP server log |
+| `HACKBOT_STREAM` / `HACKBOT_SHOW_ACTIVITY` | true | UI defaults |
 
-We welcome contributions to improve HackBot's functionality and accuracy. If you encounter any issues or have suggestions for enhancements, please feel free to open an issue or submit a pull request. Follow these steps to contribute:
+Sessions are stored as JSON in `~/.hackbot/sessions/`, triage decisions in `~/.hackbot/triage/`, document
+analyst reports in `~/.hackbot/reports/`, pane sizes in `~/.hackbot/ui.json`.
 
-1. Fork the repository.
-2. Create a new branch with a descriptive name.
-3. Make your changes and commit them.
-4. Push your changes to your forked repository.
-5. Open a pull request to the `main` branch of this repository.
+## Version pins worth knowing
 
-Please maintain a clean commit history and adhere to the project's coding guidelines.
+`acp-sdk 1.0.x` requires `uvicorn<0.35` and `fastapi<0.120`, which in turn pins the `mcp` package to 1.x;
+the MCP server import is compatible with both mcp 1.x (`FastMCP`) and 2.x (`MCPServer`).
 
-## AI training
-If anyone with the know-how of training text generation models can help improve the code. For the AI training part, I have prepared a dataset and a working code for the training but I am facing issues with the training part and collaboration on that will be appreciated.
-You can view the dataset on :
-- [HuggingFace](https://huggingface.co/datasets/morpheuslord/cve-llm-training)
-- [GitHub](https://github.com/morpheuslord/CVE-llm_dataset)
+## Credits
 
-The Github version of the dataset is for the OpenAI training and the other is for Llama2-7b from meta. The AIM of the dataset is to try and possibly generate an AI model capable enough to better work with CVE data. If you feel the dataset is lacking then feel free to modify and share your views.
-
-## Contact
-
-For any questions, feedback, or inquiries related to HackBot, feel free to contact the project maintainer:
-
-- Email: morpheuslord@protonmail.com
-- Twitter: [@morpheuslord2](https://twitter.com/morpheuslord2)
-- LinkedIn: [ChiranjeeviG](https://www.linkedin.com/in/chiranjeevi-g-naidu/)
+Original HackBot by [morpheuslord](https://github.com/morpheuslord/HackBot). This branch replaces the
+single-script chatbot with the multi-agent MCP/ACP architecture above.

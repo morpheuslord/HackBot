@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "DemoScan",
+          "semanticVersion": "1.4.2",
+          "informationUri": "https://example.org/demoscan",
+          "rules": [
+            {
+              "id": "py/sql-injection",
+              "name": "SqlInjection",
+              "shortDescription": { "text": "Database query built from user-controlled sources" },
+              "fullDescription": { "text": "Building a SQL query from user-controlled sources is vulnerable to insertion of malicious SQL code by the user. Use parameterised queries or an ORM." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": { "security-severity": "8.8", "tags": ["security", "external/cwe/cwe-089"] }
+            },
+            {
+              "id": "py/hardcoded-credentials",
+              "name": "HardcodedCredentials",
+              "shortDescription": { "text": "Hard-coded credentials" },
+              "fullDescription": { "text": "Credentials are hard-coded in the source code. Anyone with access to the code (or the compiled artefact) can extract them. Load secrets from a vault or environment variables instead." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": { "security-severity": "9.8", "tags": ["security", "external/cwe/cwe-798"] }
+            },
+            {
+              "id": "py/path-injection",
+              "name": "PathInjection",
+              "shortDescription": { "text": "Uncontrolled data used in path expression" },
+              "fullDescription": { "text": "Accessing paths influenced by users can allow an attacker to access unexpected resources (path traversal). Normalise the path and check it stays inside the intended directory." },
+              "defaultConfiguration": { "level": "error" },
+              "properties": { "security-severity": "7.5", "tags": ["security", "external/cwe/cwe-022"] }
+            },
+            {
+              "id": "py/reflective-xss",
+              "name": "ReflectedXss",
+              "shortDescription": { "text": "Reflected server-side cross-site scripting" },
+              "fullDescription": { "text": "Writing user input directly to a web page allows for a cross-site scripting vulnerability. Escape output or use a templating engine with auto-escaping." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "security-severity": "6.1", "tags": ["security", "external/cwe/cwe-079"] }
+            },
+            {
+              "id": "py/weak-crypto",
+              "name": "WeakHashAlgorithm",
+              "shortDescription": { "text": "Use of a broken or weak cryptographic hashing algorithm" },
+              "fullDescription": { "text": "MD5 and SHA-1 are not collision resistant and must not be used for password hashing or signatures. Use bcrypt/argon2 for passwords and SHA-256+ elsewhere." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "security-severity": "5.3", "tags": ["security", "external/cwe/cwe-327"] }
+            },
+            {
+              "id": "py/debug-enabled",
+              "name": "FlaskDebugEnabled",
+              "shortDescription": { "text": "Flask app run with debug=True" },
+              "fullDescription": { "text": "Running Flask with debug mode in production exposes the Werkzeug debugger, which allows arbitrary code execution." },
+              "defaultConfiguration": { "level": "warning" },
+              "properties": { "security-severity": "4.0", "tags": ["security", "external/cwe/cwe-215"] }
+            },
+            {
+              "id": "py/unused-import",
+              "name": "UnusedImport",
+              "shortDescription": { "text": "Unused import" },
+              "fullDescription": { "text": "Import is not used and can be removed." },
+              "defaultConfiguration": { "level": "note" },
+              "properties": { "tags": ["maintainability"] }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "py/sql-injection", "ruleIndex": 0, "level": "error",
+          "message": { "text": "This SQL query depends on a user-provided value ('username' from request.args)." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/auth.py" }, "region": { "startLine": 42, "startColumn": 14 } } } ]
+        },
+        {
+          "ruleId": "py/sql-injection", "ruleIndex": 0, "level": "error",
+          "message": { "text": "This SQL query depends on a user-provided value ('order_id' from request.form)." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/orders.py" }, "region": { "startLine": 88 } } } ]
+        },
+        {
+          "ruleId": "py/hardcoded-credentials", "ruleIndex": 1, "level": "error",
+          "message": { "text": "Hard-coded value 'admin123' is used as a password." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/config.py" }, "region": { "startLine": 7 } } } ]
+        },
+        {
+          "ruleId": "py/path-injection", "ruleIndex": 2, "level": "error",
+          "message": { "text": "This path depends on a user-provided value ('filename' from request.args)." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/files.py" }, "region": { "startLine": 23 } } } ]
+        },
+        {
+          "ruleId": "py/reflective-xss", "ruleIndex": 3, "level": "warning",
+          "message": { "text": "Cross-site scripting vulnerability due to a user-provided value ('q' from request.args)." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/search.py" }, "region": { "startLine": 15 } } } ]
+        },
+        {
+          "ruleId": "py/reflective-xss", "ruleIndex": 3, "level": "warning",
+          "message": { "text": "Cross-site scripting vulnerability due to a user-provided value ('name' from request.form)." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/profile.py" }, "region": { "startLine": 61 } } } ]
+        },
+        {
+          "ruleId": "py/weak-crypto", "ruleIndex": 4, "level": "warning",
+          "message": { "text": "MD5 is used to hash a password." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/auth.py" }, "region": { "startLine": 19 } } } ]
+        },
+        {
+          "ruleId": "py/debug-enabled", "ruleIndex": 5, "level": "warning",
+          "message": { "text": "A Flask app appears to be run in debug mode. This may allow an attacker to run arbitrary code through the debugger." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/__init__.py" }, "region": { "startLine": 31 } } } ]
+        },
+        {
+          "ruleId": "py/unused-import", "ruleIndex": 6, "level": "note",
+          "message": { "text": "Import of 'pickle' is not used." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/files.py" }, "region": { "startLine": 3 } } } ]
+        },
+        {
+          "ruleId": "py/unused-import", "ruleIndex": 6, "level": "note",
+          "message": { "text": "Import of 'subprocess' is not used." },
+          "locations": [ { "physicalLocation": { "artifactLocation": { "uri": "app/orders.py" }, "region": { "startLine": 2 } } } ]
+        }
+      ]
+    }
+  ]
+}
