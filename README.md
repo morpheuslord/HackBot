@@ -147,8 +147,4 @@ analyst reports in `~/.hackbot/reports/`, pane sizes in `~/.hackbot/ui.json`.
 
 `acp-sdk 1.0.x` requires `uvicorn<0.35` and `fastapi<0.120`, which in turn pins the `mcp` package to 1.x;
 the MCP server import is compatible with both mcp 1.x (`FastMCP`) and 2.x (`MCPServer`).
-
-## Credits
-
-Original HackBot by [morpheuslord](https://github.com/morpheuslord/HackBot). This branch replaces the
 single-script chatbot with the multi-agent MCP/ACP architecture above.
