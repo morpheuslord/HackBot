@@ -1,0 +1,45 @@
+[project]
+name = "hackbot"
+version = "0.1.0"
+description = "HackBot - agentic cybersecurity research team: pydantic-ai orchestrator + specialist agents over MCP and ACP, with a Rich terminal UI."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic-ai-slim[openai,mcp]>=1.0",
+    "mcp>=1.10",
+    "acp-sdk>=1.0",
+    "rich>=13.7",
+    "ddgs>=9.0",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+    "uvicorn<0.35",
+    "fastapi<0.120",
+]
+
+[project.urls]
+Homepage = "https://github.com/morpheuslord/HackBot"
+Repository = "https://github.com/Chiranjeevi-G/HackBot"
+
+[project.scripts]
+hackbot = "hackbot.__main__:main"
+hackbot-mcp = "hackbot.mcp_server:main"
+hackbot-acp = "hackbot.acp_server:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hackbot"]
+
+[dependency-groups]
+dev = [
+    "pytest-asyncio>=1.4.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
