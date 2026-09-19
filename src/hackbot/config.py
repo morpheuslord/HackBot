@@ -8,8 +8,15 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-DEFAULT_MODEL = "gpt-4.1-nano"
-MODEL_CHOICES = ["gpt-4.1-nano", "gpt-4.1-mini", "gpt-4o-mini", "gpt-5-nano", "gpt-5-mini"]
+DEFAULT_MODEL = "gpt-5.6-luna"
+MODEL_CHOICES = [
+    "gpt-5.6-luna",
+    "gpt-4.1-nano",
+    "gpt-4.1-mini",
+    "gpt-4o-mini",
+    "gpt-5-nano",
+    "gpt-5-mini",
+]
 
 
 def _env(name: str) -> str | None:
