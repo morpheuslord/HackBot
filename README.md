@@ -31,7 +31,7 @@ Agentic rewrite of [HackBot](https://github.com/morpheuslord/HackBot): a teachin
   finishes, history with previews, resizable panes and popups (Ctrl+arrows), settings with a
   first-run wizard, and a Ctrl+P command palette.
 * Research and defence only: the system prompts refuse exploit / malware generation.
-  Cheapest OpenAI model by default (`gpt-4.1-nano`).
+  Cheapest OpenAI model by default (`gpt-5.6-luna`).
 
 ```
  TUI (rich) --events--> Runtime (asyncio thread)
