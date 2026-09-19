@@ -132,7 +132,7 @@ Other entry points:
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `OPENAI_API_KEY` | - | required |
-| `HACKBOT_MODEL` | `gpt-4.1-nano` | any OpenAI chat model with tool calling |
+| `HACKBOT_MODEL` | `gpt-5.6-luna` | any OpenAI chat model with tool calling |
 | `OPENAI_BASE_URL` | OpenAI | OpenAI-compatible endpoint |
 | `HACKBOT_MAX_RESEARCHERS` | 3 | parallel researcher agents per question (1-4) |
 | `HACKBOT_ACP_URL` | - | remote ACP server, e.g. `http://127.0.0.1:8000` |
